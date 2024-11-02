@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحدي اللهجات العربية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* إعدادات عامة */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #121212;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #ffcc00;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .buttons button {
+            background-color: #ffcc00;
+            color: #121212;
+            border: none;
+            padding: 10px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .buttons button:hover {
+            background-color: #ffa500;
+        }
+
+        /* حاوية الكلمات بتنسيق قابل للتمرير */
+        .words-container {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            max-width: 800px;
+            max-height: 60vh;
+            overflow-y: auto;
+            padding: 20px;
+            margin-top: 20px;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+        }
+
+        .word-item {
+            background-color: #2e2e2e;
+            padding: 15px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: transform 0.3s;
+        }
+
+        .word-item:hover {
+            transform: scale(1.05);
+        }
+
+        .word-text {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .word-icon {
+            color: #ffcc00;
+        }
+
+        .back-button {
+            display: none;
+            margin-bottom: 20px;
+            background-color: #ffcc00;
+            color: #121212;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #ffa500;
+        }
+        
+     
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; 
+    justify-content: center;
+}
+
+.buttons button {
+    background-color: #ffcc00;
+    color: #121212;
+    border: none;
+    padding: 10px;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 45%;
+    margin-bottom: 10px;
+    display: inline-flex;
+    justify-content: center;
+}
+
+.buttons button:nth-child(odd) {
+    margin-right: 5%; 
+}
+
+.buttons button:hover {
+    background-color: #ffa500;
+}
+        
+    </style>
+</head>
+<body>
+    <h1><i class="fas fa-language"></i>الكلمات الشائعه ومعناها</h1>
+    <p>اختر الدولة لرؤية الكلمات الشائعة ومعانيها</p>
+    <button class="back-button" onclick="goBack()"><i class="fas fa-arrow-left"></i> رجوع</button>
+    <div class="buttons" id="buttonsContainer">
+        <button onclick="showWords('iraqi')"><i class="fas fa-flag"></i> عراقي</button>
+        <button onclick="showWords('saudi')"><i class="fas fa-flag"></i> سعودي</button>
+        <button onclick="showWords('egyptian')"><i class="fas fa-flag"></i> مصري</button>
+        <button onclick="showWords('syrian')"><i class="fas fa-flag"></i> سوري</button>
+        <button onclick="showWords('emirati')"><i class="fas fa-flag"></i> إماراتي</button>
+        <button onclick="showWords('moroccan')"><i class="fas fa-flag"></i> مغربي</button>
+        <button onclick="showWords('tunisian')"><i class="fas fa-flag"></i> تونسي</button>
+        <button onclick="showWords('yemeni')"><i class="fas fa-flag"></i> يمني</button>
+    </div>
+    <div id="wordsContainer" class="words-container"></div>
+
+    <script>
+        
+        const words = {
+    iraqi: [
+        { word: "شلونك", meaning: "كيف حالك" },
+        { word: "خاش", meaning: "جيد" },
+        { word: "طمغ", meaning: "أكل بشراهة" },
+        { word: "ميانة", meaning: "ألفة" },
+        { word: "ديرة", meaning: "قرية" },
+        { word: "زحفاوي", meaning: "كثير التودد" },
+        { word: "أويلي", meaning: "يا إلهي" },
+        { word: "عوف", meaning: "اترك" },
+        { word: "يابة", meaning: "يا رجل" },
+        { word: "جقارة", meaning: "سيجارة" },
+        { word: "سبع", meaning: "قوي أو شجاع" },
+        { word: "طركاعة", meaning: "مشكلة كبيرة" },
+        { word: "هوسة", meaning: "ضجيج" },
+        { word: "خربان", meaning: "تالف أو معطل" },
+        { word: "قندرة", meaning: "حذاء" },
+        { word: "فالت", meaning: "غير منضبط" },
+        { word: "جبير", meaning: "كبير" },
+        { word: "ديج", meaning: "ديك" },
+        { word: "دفر", meaning: "دفع" },
+        { word: "باوع", meaning: "انظر" },
+        { word: "قضية", meaning: "مسألة" },
+        { word: "قوة", meaning: "للتأكيد على قول شيء" },
+        { word: "طس", meaning: "ارمِ" },
+        { word: "ابو خليل", meaning: "السكير" },
+        { word: "عزيمة", meaning: "دعوة لتناول الطعام" },
+        { word: "چمطة", meaning: "حقيبة" },
+        { word: "حيل", meaning: "كثير جداً" },
+        { word: "عفيه", meaning: "أحسنت" },
+        { word: "صيح", meaning: "نادِ" },
+        { word: "هيبة", meaning: "قوة ووقار" },
+        { word: "دفو", meaning: "حادث أو اصطدام" },
+        { word: "واحد نفسية", meaning: "شخص متقلب المزاج" },
+        { word: "كوامة", meaning: "صلح بين عائلتين" },
+        { word: "خوش ولد", meaning: "شخص محترم" },
+        { word: "مصلحچي", meaning: "انتهازي" },
+        { word: "نوبة", meaning: "مرة أخرى" },
+        { word: "مو خوش", meaning: "سيء" },
+        { word: "خبل", meaning: "مجنون" },
+        { word: "فشلة", meaning: "عار أو خجل" },
+        { word: "سودة علي", meaning: "يا لسوء حظي" },
+        { word: "زوين", meaning: "جميل" },
+        { word: "مچلب", meaning: "متمسك" },
+        { word: "ينطي", meaning: "يعطي" },
+        { word: "حچاية", meaning: "قصة" },
+        { word: "مطي", meaning: "حمار" },
+        { word: "معيدي", meaning: "شخص بسيط" },
+        { word: "بخت", meaning: "حظ" },
+        { word: "مزعطة", meaning: "صغير جداً" },
+        { word: "زمال", meaning: "جمل صغير" },
+        { word: "فرهود", meaning: "غنيمة" },
+        { word: "سولف", meaning: "تحدث" }
+    
+            ],
+            saudi: [
+    { word: "مرة", meaning: "جداً" },
+    { word: "زحلط", meaning: "انزلق" },
+    { word: "مدرعم", meaning: "مستعجل" },
+    { word: "صملة", meaning: "مثابرة" },
+    { word: "يقلط", meaning: "يدخل" },
+    { word: "خوش", meaning: "حسناً" },
+    { word: "طقطق", meaning: "أزعج" },
+    { word: "عزوز", meaning: "مقدار قليل" },
+    { word: "فصفص", meaning: "تناول البذور" },
+    { word: "قرقع", meaning: "دق" },
+    { word: "يوميات", meaning: "أحداث يومية" },
+    { word: "شرشح", meaning: "فضح" },
+    { word: "دق على الخشب", meaning: "تجنب الحسد" },
+    { word: "حوس", meaning: "تخبّط" },
+    { word: "قوي", meaning: "شجاع" },
+    { word: "فهد", meaning: "شخص سريع" },
+    { word: "طبل", meaning: "مبالغة" },
+    { word: "زودها", meaning: "أكثرها" },
+    { word: "يسولف", meaning: "يتحدث" },
+    { word: "تربط", meaning: "تسير معاً" },
+    { word: "بطل", meaning: "شجاع" },
+    { word: "حش", meaning: "مجموعة" },
+    { word: "عموماً", meaning: "بشكل عام" },
+    { word: "حلو", meaning: "جميل" },
+    { word: "ساكن", meaning: "مقيم" },
+    { word: "ضيافة", meaning: "استقبال" },
+    { word: "مدعوم", meaning: "مدعوم" },
+    { word: "خيال", meaning: "تخيل" },
+    { word: "مفيد", meaning: "نافع" },
+    { word: "طرطش", meaning: "صوت منخفض" },
+    { word: "مبسوط", meaning: "فرحان" },
+    { word: "فطس", meaning: "مضحك" },
+    { word: "معسّل", meaning: "مركب" },
+    { word: "محمّص", meaning: "مشهور" },
+    { word: "قرش", meaning: "قليل من المال" },
+    { word: "يصف", meaning: "يشرح" },
+    { word: "يقطر", meaning: "يتساقط" },
+    { word: "بجدة", meaning: "بكثرة" },
+    { word: "دقن", meaning: "لحية" },
+    { word: "سباك", meaning: "شخص يعمل بالسباكة" },
+    { word: "مروّج", meaning: "مسوق" },
+    { word: "سطو", meaning: "سرقة" },
+    { word: "قصب", meaning: "سريع" },
+    { word: "مرفوع", meaning: "مرتفع" },
+    { word: "تنزيل", meaning: "خصم" },
+    { word: "غش", meaning: "خداع" },
+    { word: "غريبة", meaning: "غير مألوفة" },
+    { word: "أخلاقيات", meaning: "قواعد السلوك" },
+    { word: "معتبر", meaning: "مؤثر" },
+    { word: "ماشي", meaning: "مقبول" },
+    { word: "تخصيص", meaning: "تحديد" },
+    { word: "رواية", meaning: "قصة" },
+    { word: "كتابة", meaning: "تدوين" },
+    { word: "كنافة", meaning: "حلوى" },
+    { word: "تفطيس", meaning: "مضغوط" },
+    { word: "متشدد", meaning: "صارم" },
+    { word: "منطق", meaning: "عقل" },
+    { word: "شيء", meaning: "أي شيء" },
+    { word: "فوضى", meaning: "اضطراب" },
+    { word: "معاني", meaning: "معاني الكلمات" },
+            ],
+            egyptian: [
+    { word: "عامل ايه", meaning: "كيف حالك" },
+    { word: "فل", meaning: "جيد" },
+    { word: "يلا بينا", meaning: "هيا بنا" },
+    { word: "دغري", meaning: "مباشرة" },
+    { word: "عاوز", meaning: "أريد" },
+    { word: "عبيط", meaning: "غبي" },
+    { word: "فرفوش", meaning: "مرح" },
+    { word: "تنكّر", meaning: "تظاهر" },
+    { word: "مزيكا", meaning: "موسيقى" },
+    { word: "حبوبة", meaning: "عزيزة" },
+    { word: "مقلوب", meaning: "عكسي" },
+    { word: "تقيل", meaning: "ثقيل" },
+    { word: "فاضي", meaning: "فارغ" },
+    { word: "كلام فارغ", meaning: "حديث بلا قيمة" },
+    { word: "شاطر", meaning: "ذكي" },
+    { word: "مكسرات", meaning: "مجموعة من المكسرات" },
+    { word: "ولاد الأصول", meaning: "الأشخاص المحترمون" },
+    { word: "قلبك كبير", meaning: "أنت طيب القلب" },
+    { word: "مصيبة", meaning: "كارثة" },
+    { word: "هتموت من الضحك", meaning: "ستضحك كثيراً" },
+    { word: "مش تمام", meaning: "ليس جيداً" },
+    { word: "حلوة", meaning: "جميلة" },
+    { word: "ضرب نار", meaning: "صوت قوي" },
+    { word: "مشتاق", meaning: "أفتقدك" },
+    { word: "اتأخرنا", meaning: "تأخرنا" },
+    { word: "شغف", meaning: "حب قوي" },
+    { word: "مزاج", meaning: "حالة نفسية" },
+    { word: "يلعب في الوقت الضائع", meaning: "يفقد الوقت" },
+    { word: "مبلّغ", meaning: "شخص محذّر" },
+    { word: "فاشل", meaning: "غير ناجح" },
+    { word: "حاجة كده", meaning: "شيء ما" },
+    { word: "يوم عادي", meaning: "يوم طبيعي" },
+    { word: "شغلته", meaning: "عمله" },
+    { word: "خناقة", meaning: "شجار" },
+    { word: "مش تمام", meaning: "ليس على ما يرام" },
+    { word: "عسل", meaning: "جميل جداً" },
+    { word: "تسلم", meaning: "شكراً" },
+    { word: "استنى", meaning: "انتظر" },
+    { word: "مجنون", meaning: "شخص غير عاقل" },
+    { word: "كل سنة وانت طيب", meaning: "أتمنى لك الخير في كل عام" },
+    { word: "فرفشة", meaning: "مرح" },
+    { word: "مهيصة", meaning: "فرحة" },
+    { word: "مش كده", meaning: "أليس كذلك؟" },
+    { word: "صيفي", meaning: "موسم الصيف" },
+    { word: "كافيه", meaning: "مقهى" },
+    { word: "ضيافة", meaning: "استقبال" },
+    { word: "خطير", meaning: "عظيم" },
+    { word: "دنيا", meaning: "الحياة" },
+    { word: "مفتاح", meaning: "الوسيلة" },
+            ],
+            syrian: [
+    { word: "شو", meaning: "ماذا" },
+    { word: "لك", meaning: "لك" },
+    { word: "ايه", meaning: "نعم" },
+    { word: "فهمان", meaning: "ذكي" },
+    { word: "منيح", meaning: "جيد" },
+    { word: "عيني", meaning: "عزيزي" },
+    { word: "يعني", meaning: "أي" },
+    { word: "طالع", meaning: "خارجي" },
+    { word: "يلا", meaning: "هيا" },
+    { word: "ماشي", meaning: "موافق" },
+    { word: "برافو", meaning: "ممتاز" },
+    { word: "فاشل", meaning: "غير ناجح" },
+    { word: "حبيبي", meaning: "عزيزي" },
+    { word: "قلبي", meaning: "حبي" },
+    { word: "قصة", meaning: "حكاية" },
+    { word: "يسلمو", meaning: "شكراً" },
+    { word: "صاير", meaning: "يحدث" },
+    { word: "عادي", meaning: "طبيعي" },
+    { word: "بخس", meaning: "يقلل من القيمة" },
+    { word: "شغلة", meaning: "عمل" },
+    { word: "لا تواخذني", meaning: "لا تزعجني" },
+    { word: "مليان", meaning: "ممتلئ" },
+    { word: "تسلم إيدك", meaning: "شكراً لجهودك" },
+    { word: "مغسول", meaning: "نظيف" },
+    { word: "هنا", meaning: "في هذا المكان" },
+    { word: "بالعادة", meaning: "عادةً" },
+    { word: "بصراحة", meaning: "بصراحة" },
+    { word: "مقرف", meaning: "غير مريح" },
+    { word: "بسيط", meaning: "سهل" },
+    { word: "فوضى", meaning: "اضطراب" },
+    { word: "مستحيل", meaning: "غير ممكن" },
+    { word: "مشكلجي", meaning: "مشاغب" },
+    { word: "صافي", meaning: "نقي" },
+    { word: "مركز", meaning: "محور" },
+    { word: "محل", meaning: "مكان" },
+    { word: "حليوة", meaning: "جميلة" },
+    { word: "حامل", meaning: "حامل شيء" },
+    { word: "مجرد", meaning: "فقط" },
+    { word: "جديد", meaning: "حديث" },
+    { word: "بيت", meaning: "منزل" },
+    { word: "شمس", meaning: "نور الشمس" },
+    { word: "فكرة", meaning: "مفهوم" },
+    { word: "تربية", meaning: "تعليم" },
+    { word: "ذكاء", meaning: "فطنة" },
+    { word: "مشهور", meaning: "معروف" },
+    { word: "نجاح", meaning: "تفوق" },
+    { word: "قوي", meaning: "شديد" },
+    { word: "ضعيف", meaning: "غير قوي" },
+    { word: "معقول", meaning: "مقبول" },
+    { word: "عدي", meaning: "مألوف" },
+    { word: "نتيجة", meaning: "نتيجة الأمر" },
+    { word: "تعبان", meaning: "مرهق" },
+    { word: "مهم", meaning: "ضروري" },
+    { word: "أجمل", meaning: "الأكثر جمالاً" },
+            ],
+            emirati: [
+    { word: "شو السالفة", meaning: "ما الموضوع" },
+    { word: "نساي", meaning: "شخص ينسى" },
+    { word: "مب", meaning: "ليس" },
+    { word: "مخ", meaning: "رأس" },
+    { word: "حياك", meaning: "أهلاً وسهلاً" },
+    { word: "دايم", meaning: "دائماً" },
+    { word: "عطني", meaning: "أعطني" },
+    { word: "حشيم", meaning: "محتشم" },
+    { word: "فزعة", meaning: "مساعدة" },
+    { word: "بطاقة", meaning: "تذكرة" },
+    { word: "مشوار", meaning: "رحلة قصيرة" },
+    { word: "فلة", meaning: "فرحة" },
+    { word: "سموحة", meaning: "عذراً" },
+    { word: "تعال", meaning: "أقبل" },
+    { word: "زين", meaning: "جيد" },
+    { word: "غريب", meaning: "غير عادي" },
+    { word: "طري", meaning: "طرية" },
+    { word: "مبسوط", meaning: "سعيد" },
+    { word: "عجيب", meaning: "غريب" },
+    { word: "زعل", meaning: "حزن" },
+    { word: "ملاحظة", meaning: "تنبيه" },
+    { word: "يعطيك العافية", meaning: "شكرًا لك على جهودك" },
+    { word: "خوي", meaning: "صديق" },
+    { word: "مطر", meaning: "مطر" },
+    { word: "عزيمه", meaning: "دعوة" },
+    { word: "سوي", meaning: "قم ب" },
+    { word: "خاطر", meaning: "رغبة" },
+    { word: "بنت", meaning: "فتاة" },
+    { word: "تسلم", meaning: "شكراً" },
+    { word: "زود", meaning: "زيادة" },
+    { word: "عربون", meaning: "مقدم" },
+    { word: "توقيت", meaning: "وقت" },
+    { word: "درب", meaning: "طريق" },
+    { word: "مخاطرة", meaning: "مجازفة" },
+    { word: "زود", meaning: "كثير" },
+    { word: "صوت", meaning: "صوت" },
+    { word: "جيد", meaning: "حسن" },
+    { word: "شهر", meaning: "مدة زمنية" },
+    { word: "عيد", meaning: "احتفال" },
+    { word: "رمضان", meaning: "شهر الصيام" },
+    { word: "بخور", meaning: "عطر" },
+    { word: "سمر", meaning: "حديث ليلي" },
+    { word: "صديق", meaning: "رفيق" },
+    { word: "سرور", meaning: "فرحة" },
+    { word: "خاتم", meaning: "حلقة" },
+    { word: "تذكر", meaning: "اذكر" },
+    { word: "دودو", meaning: "دودة" },
+            ],
+            moroccan: [
+    { word: "واش", meaning: "هل" },
+    { word: "خاي", meaning: "أخي" },
+    { word: "بزاف", meaning: "كثير" },
+    { word: "صافي", meaning: "انتهى" },
+    { word: "مزيان", meaning: "جيد" },
+    { word: "حشومة", meaning: "عيب" },
+    { word: "شكون", meaning: "من" },
+    { word: "عفاك", meaning: "من فضلك" },
+    { word: "بغيت", meaning: "أريد" },
+    { word: "فين", meaning: "أين" },
+    { word: "مليح", meaning: "جميل" },
+    { word: "دابا", meaning: "الآن" },
+    { word: "صاحب", meaning: "صديق" },
+    { word: "شوية", meaning: "قليل" },
+    { word: "ماشي", meaning: "ليس" },
+    { word: "سلام", meaning: "تحية" },
+    { word: "كعكة", meaning: "حلويات" },
+    { word: "كازا", meaning: "الدار البيضاء" },
+    { word: "غادي", meaning: "سأذهب" },
+    { word: "تبارك الله", meaning: "ما شاء الله" },
+    { word: "حنا", meaning: "نحن" },
+    { word: "عيط", meaning: "اتصل" },
+    { word: "سير", meaning: "اذهب" },
+    { word: "حبيبي", meaning: "عزيزي" },
+    { word: "أجي", meaning: "تعال" },
+    { word: "مشتاق", meaning: "أفتقدك" },
+    { word: "ساهل", meaning: "سهل" },
+    { word: "غلط", meaning: "خطأ" },
+    { word: "فاش", meaning: "عندما" },
+    { word: "بشوية", meaning: "ببطء" },
+    { word: "حاج", meaning: "شيء" },
+    { word: "خدم", meaning: "عمل" },
+    { word: "مزيانة", meaning: "جيدة" },
+    { word: "فم", meaning: "فم" },
+    { word: "راني", meaning: "أنا" },
+    { word: "عيني", meaning: "عزيزي" },
+    { word: "عزوز", meaning: "قديم" },
+    { word: "أسطورة", meaning: "حكاية" },
+    { word: "تساهل", meaning: "تسامح" },
+    { word: "تسلا", meaning: "استمتع" },
+    { word: "طعام", meaning: "أكل" },
+    { word: "بلادي", meaning: "بلدي" },
+    { word: "عشرة", meaning: "عشرة" },
+    { word: "لعب", meaning: "ممارسة" },
+    { word: "عقيقة", meaning: "احتفال" },
+    { word: "زعما", meaning: "يبدو" },
+            ],
+            tunisian: [
+    { word: "شنوة", meaning: "ماذا" },
+    { word: "برشة", meaning: "كثير" },
+    { word: "بيه", meaning: "جيد" },
+    { word: "بالحق", meaning: "حقاً" },
+    { word: "وين", meaning: "أين" },
+    { word: "عسلامة", meaning: "السلام عليكم" },
+    { word: "عايز", meaning: "أريد" },
+    { word: "أولاد", meaning: "أطفال" },
+    { word: "حبيت", meaning: "أحببت" },
+    { word: "قداش", meaning: "كم" },
+    { word: "كل شيء", meaning: "كل شيء" },
+    { word: "عقلي", meaning: "عقلي" },
+    { word: "سيدي", meaning: "سيدي" },
+    { word: "ماشي", meaning: "ذهبت" },
+    { word: "معناها", meaning: "يعني" },
+    { word: "صحيح", meaning: "صحيح" },
+    { word: "تبارك الله", meaning: "ما شاء الله" },
+    { word: "هاني", meaning: "أنا هنا" },
+    { word: "حبيبي", meaning: "عزيزي" },
+    { word: "كل يوم", meaning: "كل يوم" },
+    { word: "حب", meaning: "حب" },
+    { word: "ربي", meaning: "الله" },
+    { word: "تفهم", meaning: "تفهم" },
+    { word: "شوية", meaning: "قليل" },
+    { word: "باهي", meaning: "جيد" },
+    { word: "عليك", meaning: "عليك" },
+    { word: "بالصحة", meaning: "بصحة جيدة" },
+    { word: "سكت", meaning: "اصمت" },
+    { word: "غدوة", meaning: "غداً" },
+    { word: "هوني", meaning: "هنا" },
+    { word: "صباح الخير", meaning: "صباح الخير" },
+    { word: "غلط", meaning: "خطأ" },
+    { word: "توة", meaning: "الآن" },
+    { word: "عزيز", meaning: "عزيز" },
+    { word: "فمة", meaning: "هناك" },
+    { word: "عليّ", meaning: "علي" },
+    { word: "قلي", meaning: "قل لي" },
+    { word: "ساهل", meaning: "سهل" },
+    { word: "عيط", meaning: "اتصل" },
+    { word: "كل", meaning: "كل" },
+    { word: "نحبك", meaning: "أحبك" },
+            ],
+            yemeni: [
+    { word: "قدك", meaning: "ماذا" },
+    { word: "زامل", meaning: "أغنية شعبية" },
+    { word: "عار", meaning: "خجل" },
+    { word: "رَك", meaning: "أمسك" },
+    { word: "وينه", meaning: "أين هو" },
+    { word: "جيد", meaning: "حسن" },
+    { word: "أحمر", meaning: "أحمر" },
+    { word: "مشتاق", meaning: "أفتقدك" },
+    { word: "حبيبي", meaning: "عزيزي" },
+    { word: "سلام", meaning: "سلام" },
+    { word: "كيف حالك", meaning: "كيف حالك" },
+    { word: "بسيط", meaning: "سهل" },
+    { word: "صاحب", meaning: "صديق" },
+    { word: "وقت", meaning: "وقت" },
+    { word: "خلاص", meaning: "انتهى" },
+    { word: "عندما", meaning: "عندما" },
+    { word: "بني", meaning: "ابني" },
+    { word: "صحيح", meaning: "صحيح" },
+    { word: "عطشان", meaning: "عطشان" },
+    { word: "أحبك", meaning: "أحبك" },
+    { word: "مبالغ", meaning: "مبالغ فيه" },
+    { word: "يوم", meaning: "يوم" },
+    { word: "شفت", meaning: "رأيت" },
+    { word: "جديدة", meaning: "جديدة" },
+    { word: "عادي", meaning: "عادي" },
+    { word: "جديد", meaning: "جديد" },
+    { word: "صعب", meaning: "صعب" },
+    { word: "مجنون", meaning: "مجنون" },
+    { word: "عزيز", meaning: "عزيز" },
+    { word: "بيت", meaning: "منزل" },
+    { word: "شيء", meaning: "شيء" },
+    { word: "يوم الجمعة", meaning: "يوم الجمعة" },
+    { word: "معك", meaning: "معك" },
+    { word: "يقل", meaning: "يقول" },
+    { word: "ماشي", meaning: "ذهبت" },
+    { word: "تكون", meaning: "تكون" },
+    { word: "أشياء", meaning: "أشياء" },
+    { word: "رجاء", meaning: "رجاء" },
+
+            ]
+        };
+
+      
+        function showWords(dialect) {
+            const wordsContainer = document.getElementById("wordsContainer");
+            const buttonsContainer = document.getElementById("buttonsContainer");
+            const backButton = document.querySelector(".back-button");
+
+           
+            buttonsContainer.style.display = "none";
+            backButton.style.display = "block";
+
+            
+            wordsContainer.innerHTML = ""; 
+            wordsContainer.style.display = "flex"; 
+
+            words[dialect].forEach(item => {
+                const wordItem = document.createElement("div");
+                wordItem.className = "word-item";
+                
+                wordItem.innerHTML = `
+                    <div class="word-text">
+                        <i class="fas fa-comment-dots word-icon"></i>
+                        <strong>${item.word}</strong>
+                    </div>
+                    <span>${item.meaning}</span>
+                `;
+                
+                wordsContainer.appendChild(wordItem);
+            });
+        }
+
+      
+        function goBack() {
+            document.getElementById("buttonsContainer").style.display = "grid";
+            document.querySelector(".back-button").style.display = "none";
+            document.getElementById("wordsContainer").style.display = "none";
+        }
+        
+    </script>
+</body>
+</html>
